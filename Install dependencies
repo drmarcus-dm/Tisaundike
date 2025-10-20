@@ -1,0 +1,2 @@
+npm init -y
+npm install express express-session multer sqlite3 bcrypt uuid ejs
