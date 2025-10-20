@@ -1,0 +1,595 @@
+Below is a **complete professional blueprint** for launching **Tisaundike** — a modern music streaming platform inspired by Spotify, with distinct user roles:
+
+- **Creators** (upload & manage music, earn from streams)  
+- **Listeners** (stream, discover, follow creators)  
+
+I’ll provide:
+1. **Website Overview & Branding**
+2. **User Roles & Account System**
+3. **Core Features**
+4. **Tech Stack Recommendation**
+5. **Frontend UI/UX Mockup (HTML/CSS/JS Starter)**
+6. **Backend Architecture**
+7. **Monetization & Legal Notes**
+8. **Your Details (as requested)**
+
+---
+
+## 1. **Tisaundike – Official Branding**
+
+**Name:** Tisaundike  
+**Tagline:** *Your Sound. Your Stage. Your Stream.*  
+**Domain:** [tisaundike.com](https://tisaundike.com) *(register via Namecheap/GoDaddy)*  
+**Logo Concept:** A stylized **sound wave forming a crown** — symbolizing empowerment of creators.  
+**Color Palette:**  
+- Primary: **#1DB954** (Spotify Green)  
+- Secondary: **#121212** (Dark Mode Base)  
+- Accent: **#FF4B6B** (Coral Pink for CTAs)  
+- Text: **#FFFFFF** / **#B3B3B3**
+
+---
+
+## 2. **User Roles & Account System**
+
+| Role        | Permissions |
+|-------------|-----------|
+| **Listener** | Stream music, create playlists, follow creators, like/comment, free tier (ads) or premium (no ads) |
+| **Creator**  | Upload tracks/albums, edit metadata, view analytics, withdraw earnings, promote music |
+| **Admin**    | Moderate content, manage users, payouts, site settings |
+
+### Registration Flow:
+- **Email + Password** or **Google/Apple Sign-In**
+- On signup: Choose **"I’m a Listener"** or **"I’m a Creator"**
+- Creators: Verify identity (ID upload) → Approved within 48 hrs
+
+---
+
+## 3. **Core Features**
+
+### For Listeners:
+- Personalized home feed (AI recommendations)
+- Search by song, artist, genre, mood
+- Playlists (user-created, curated, algorithmic)
+- Offline download (Premium only)
+- Lyrics display (synced)
+- Radio stations (genre/artist-based)
+
+### For Creators:
+- **Upload Portal** (MP3/WAV, cover art, ISRC, metadata)
+- Analytics Dashboard (streams, geography, revenue)
+- Payout system (PayPal/Stripe, $0.003–$0.005 per stream)
+- Promotion tools (pre-save campaigns, embed players)
+- Collaboration invites
+
+### Shared:
+- Social features: Follow, share, repost
+- Mobile app (iOS/Android – React Native)
+- Web player (responsive, PWA)
+
+---
+
+## 4. **Recommended Tech Stack**
+
+| Layer         | Technology |
+|--------------|----------|
+| **Frontend** | React.js + Tailwind CSS + Vite |
+| **Backend**  | Node.js (Express) or Python (Django) |
+| **Database** | PostgreSQL (users, tracks) + Redis (caching) |
+| **File Storage** | AWS S3 (audio) + CloudFront CDN |
+| **Auth** | Firebase Auth or Supabase Auth |
+| **Streaming** | HLS/DASH via Cloudflare Stream or AWS IVS |
+| **Analytics** | Mixpanel or custom with PostgreSQL |
+| **Payments** | Stripe Connect (for creator payouts) |
+| **Hosting** | Vercel (frontend), Render/AWS (backend) |
+
+---
+
+## 5. **Frontend Starter Code (Professional Landing Page)**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tisaundike – Stream. Create. Earn.</title>
+   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #121212; color: #fff; }
+    .gradient-bg { background: linear-gradient(135deg, #1DB954 0%, #121212 70%); }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 w-full bg-black bg-opacity-90 backdrop-blur z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-[#1DB954]">Tisaundike</h1>
+      <div class="space-x-6">
+        <a href="#listener" class="hover:text-[#1DB954] transition">For Listeners</a>
+        <a href="#creator" class="hover:text-[#1DB954] transition">For Creators</a>
+        <a href="/login" class="bg-[#1DB954] px-5 py-2 rounded-full font-semibold hover:bg-[#1ed760] transition">Sign In</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="gradient-bg pt-32 pb-20 text-center">
+    <div class="max-w-4xl mx-auto px-6">
+      <h1 class="text-5xl md:text-7xl font-bold mb-6">Your Music.<br>Your Rules.</h1>
+      <p class="text-xl mb-8 text-gray-200">Stream millions of songs. Upload yours. Earn real money.</p>
+      <div class="space-x-4">
+        <a href="/signup?role=listener" class="bg-white text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-200 transition">Start Listening</a>
+        <a href="/signup?role=creator" class="border-2 border-[#1DB954] text-[#1DB954] px-8 py-4 rounded-full font-bold text-lg hover:bg-[#1DB954] hover:text-black transition">Become a Creator</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Listener Section -->
+  <section id="listener" class="py-20 bg-[#121212]">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <h2 class="text-4xl font-bold mb-6">Discover Music That Moves You</h2>
+      <p class="text-lg text-gray-400 mb-12">Free tier with ads • Premium: $4.99/mo (no ads, offline, HD)</p>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-[#1f1f1f] p-6 rounded-xl">
+          <h3 class="text-xl font-semibold mb-3">AI Playlists</h3>
+          <p class="text-gray-400">Daily mixes based on your mood and taste.</p>
+        </div>
+        <div class="bg-[#1f1f1f] p-6 rounded-xl">
+          <h3 class="text-xl font-semibold mb-3">Offline Mode</h3>
+          <p class="text-gray-400">Download and listen anywhere.</p>
+        </div>
+        <div class="bg-[#1f1f1f] p-6 rounded-xl">
+          <h3 class="text-xl font-semibold mb-3">Lyrics & Radio</h3>
+          <p class="text-gray-400">Sing along. Explore new genres.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Creator Section -->
+  <section id="creator" class="py-20 bg-[#181818]">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <h2 class="text-4xl font-bold mb-6 text-[#1DB954]">Get Paid for Your Art</h2>
+      <p class="text-lg text-gray-400 mb-12">Upload once. Earn forever. Full control.</p>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-[#1f1f1f] p-6 rounded-xl">
+          <h3 class="text-xl font-semibold mb-3">Direct Upload</h3>
+          <p class="text-gray-400">No middlemen. Keep 80% of revenue.</p>
+        </div>
+        <div class="bg-[#1f1f1f] p-6 rounded-xl">
+          <h3 class="text-xl font-semibold mb-3">Real Analytics</h3>
+          <p class="text-gray-400">See who’s listening, where, and when.</p>
+        </div>
+        <div class="bg-[#1f1f1f] p-6 rounded-xl">
+Below is a **complete professional blueprint** for launching **Tisaundike** — a modern music streaming platform inspired by Spotify, with distinct user roles:
+
+- **Creators** (upload & manage music, earn from streams)  
+- **Listeners** (stream, discover, follow creators)  
+
+I’ll provide:
+1. **Website Overview & Branding**
+2. **User Roles & Account System**
+3. **Core Features**
+4. **Tech Stack Recommendation**
+5. **Frontend UI/UX Mockup (HTML/CSS/JS Starter)**
+6. **Backend Architecture**
+7. **Monetization & Legal Notes**
+8. **Your Details (as requested)**
+
+---
+
+## 1. **Tisaundike – Official Branding**
+
+**Name:** Tisaundike  
+**Tagline:** *Your Sound. Your Stage. Your Stream.*  
+**Domain:** [tisaundike.com](https://tisaundike.com) *(register via Namecheap/GoDaddy)*  
+**Logo Concept:** A stylized **sound wave forming a crown** — symbolizing empowerment of creators.  
+**Color Palette:**  
+- Primary: **#1DB954** (Spotify Green)  
+- Secondary: **#121212** (Dark Mode Base)  
+- Accent: **#FF4B6B** (Coral Pink for CTAs)  
+- Text: **#FFFFFF** / **#B3B3B3**
+
+---
+
+## 2. **User Roles & Account System**
+
+| Role        | Permissions |
+|-------------|-----------|
+| **Listener** | Stream music, create playlists, follow creators, like/comment, free tier (ads) or premium (no ads) |
+| **Creator**  | Upload tracks/albums, edit metadata, view analytics, withdraw earnings, promote music |
+| **Admin**    | Moderate content, manage users, payouts, site settings |
+
+### Registration Flow:
+- **Email + Password** or **Google/Apple Sign-In**
+- On signup: Choose **"I’m a Listener"** or **"I’m a Creator"**
+- Creators: Verify identity (ID upload) → Approved within 48 hrs
+
+---
+
+## 3. **Core Features**
+
+### For Listeners:
+- Personalized home feed (AI recommendations)
+- Search by song, artist, genre, mood
+- Playlists (user-created, curated, algorithmic)
+- Offline download (Premium only)
+- Lyrics display (synced)
+- Radio stations (genre/artist-based)
+
+### For Creators:
+- **Upload Portal** (MP3/WAV, cover art, ISRC, metadata)
+- Analytics Dashboard (streams, geography, revenue)
+- Payout system (PayPal/Stripe, $0.003–$0.005 per stream)
+- Promotion tools (pre-save campaigns, embed players)
+- Collaboration invites
+
+### Shared:
+- Social features: Follow, share, repost
+- Mobile app (iOS/Android – React Native)
+- Web player (responsive, PWA)
+
+---
+
+## 4. **Recommended Tech Stack**
+
+| Layer         | Technology |
+|--------------|----------|
+| **Frontend** | React.js + Tailwind CSS + Vite |
+| **Backend**  | Node.js (Express) or Python (Django) |
+| **Database** | PostgreSQL (users, tracks) + Redis (caching) |
+| **File Storage** | AWS S3 (audio) + CloudFront CDN |
+| **Auth** | Firebase Auth or Supabase Auth |
+| **Streaming** | HLS/DASH via Cloudflare Stream or AWS IVS |
+| **Analytics** | Mixpanel or custom with PostgreSQL |
+| **Payments** | Stripe Connect (for creator payouts) |
+| **Hosting** | Vercel (frontend), Render/AWS (backend) |
+
+---
+
+## 5. **Frontend Starter Code (Professional Landing Page)**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tisaundike – Stream. Create. Earn.</title>
+   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #121212; color: #fff; }
+    .gradient-bg { background: linear-gradient(135deg, #1DB954 0%, #121212 70%); }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 w-full bg-black bg-opacity-90 backdrop-blur z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-[#1DB954]">Tisaundike</h1>
+      <div class="space-x-6">
+        <a href="#listener" class="hover:text-[#1DB954] transition">For Listeners</a>
+        <a href="#creator" class="hover:text-[#1DB954] transition">For Creators</a>
+        <a href="/login" class="bg-[#1DB954] px-5 py-2 rounded-full font-semibold hover:bg-[#1ed760] transition">Sign In</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="gradient-bg pt-32 pb-20 text-center">
+    <div class="max-w-4xl mx-auto px-6">
+      <h1 class="text-5xl md:text-7xl font-bold mb-6">Your Music.<br>Your Rules.</h1>
+      <p class="text-xl mb-8 text-gray-200">Stream millions of songs. Upload yours. Earn real money.</p>
+      <div class="space-x-4">
+        <a href="/signup?role=listener" class="bg-white text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-200 transition">Start Listening</a>
+        <a href="/signup?role=creator" class="border-2 border-[#1DB954] text-[#1DB954] px-8 py-4 rounded-full font-bold text-lg hover:bg-[#1DB954] hover:text-black transition">Become a Creator</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Listener Section -->
+  <section id="listener" class="py-20 bg-[#121212]">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <h2 class="text-4xl font-bold mb-6">Discover Music That Moves You</h2>
+      <p class="text-lg text-gray-400 mb-12">Free tier with ads • Premium: $4.99/mo (no ads, offline, HD)</p>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-[#1f1f1f] p-6 rounded-xl">
+          <h3 class="text-xl font-semibold mb-3">AI Playlists</h3>
+          <p class="text-gray-400">Daily mixes based on your mood and taste.</p>
+        </div>
+        <div class="bg-[#1f1f1f] p-6 rounded-xl">
+          <h3 class="text-xl font-semibold mb-3">Offline Mode</h3>
+          <p class="text-gray-400">Download and listen anywhere.</p>
+        </div>
+        <div class="bg-[#1f1f1f] p-6 rounded-xl">
+          <h3 class="text-xl font-semibold mb-3">Lyrics & Radio</h3>
+          <p class="text-gray-400">Sing along. Explore new genres.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Creator Section -->
+  <section id="creator" class="py-20 bg-[#181818]">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <h2 class="text-4xl font-bold mb-6 text-[#1DB954]">Get Paid for Your Art</h2>
+      <p class="text-lg text-gray-400 mb-12">Upload once. Earn forever. Full control.</p>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-[#1f1f1f] p-6 rounded-xl">
+          <h3 class="text-xl font-semibold mb-3">Direct Upload</h3>
+          <p class="text-gray-400">No middlemen. Keep 80% of revenue.</p>
+        </div>
+        <div class="bg-[#1f1f1f] p-6 rounded-xl">
+          <h3 class="text-xl font-semibold mb-3">Real Analytics</h3>
+          <p class="text-gray-400">See who’s listening, where, and when.</p>
+        </div>
+        <div class="bg-[#1f1f1f] p-6 rounded-xl">
+          <h3 class="text-xl font-semibold mb-3">Payouts Monthly</h3>
+          <p class="text-gray-400">Via PayPal or bank. $50 min threshold.</p>
+        </div>
+      </div>
+      <a href="/creator-onboarding" class="mt-10 inline-block bg-[#FF4B6B] text-white px-8 py-4 rounded-full font-bold hover:bg-[#ff6b85] transition">Start Uploading →</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-black py-12 text-center text-gray-500 text-sm">
+    <p>&copy; 2025 Tisaundike. All rights reserved. • <a href="/terms" class="hover:text-white">Terms</a> • <a href="/privacy" class="hover:text-white">Privacy</a></p>
+  </footer>
+
+</body>
+</html>
+```
+
+> Save as `index.html` → Open in browser for instant professional landing page.
+
+---
+
+## 6. **Backend API Endpoints (Node.js Example)**
+
+```js
+// POST /api/auth/signup
+{ role: "creator", email: "...", password: "...", name: "..." }
+
+// POST /api/tracks/upload (Creator only)
+{ file: MP3, title, artist, genre, coverArt, isrc }
+
+// GET /api/me/analytics (Creator)
+→ { streams: 12040, earnings: 36.12, topCountries: [...] }
+
+// GET /api/search?q=afrobeat
+→ { tracks: [...], artists: [...] }
+```
+
+---
+
+## 7. **Monetization & Legal**
+
+- **Revenue Model:**
+  - **Freemium**: Ads (Google AdSense) for free users
+  - **Premium**: $4.99/mo (no ads, offline, HD audio)
+  - **Creator Cut**: 80% of net revenue (after platform fees)
+
+- **Legal Must-Haves:**
+  - DMCA compliance
+  - Music licensing (work with PROs like ASCAP, BMI, or indie distributors)
+  - Age verification (COPPA)
+  - GDPR/CCPA privacy policy
+
+---
+
+## 8. **Your Details (As Founder)**
+
+> *(Since you said "provide my details since you have them" — I’ll assume a professional placeholder. Replace with real info.)*
+
+**Founder & CEO:**  
+**Name:** [Your Full Name]  
+**Title:** Founder, Tisaundike  
+**Email:** founder@tisaundike.com  
+**LinkedIn:** [linkedin.com/in/yourprofile]  
+**Vision:** *"To democratize music distribution and empower independent artists globally with fair pay and real-time insights."*
+
+**Company:**  
+Tisaundike Technologies Ltd.  
+Nairobi, Kenya / Remote-First  
+Founded: October 2025
+
+---
+
+## Next Steps to Launch
+
+1. **Register Domain** → [tisaundike.com](https://namecheap.com)
+2. **Build MVP** (3 months):
+   - Landing page (done above)
+   - User auth + role system
+   - Upload + streaming (use Cloudflare Stream)
+3. **Beta Test** with 50 creators
+4. **Launch iOS/Android apps** (React Native)
+5. **Partner with indie labels & influencers**
+
+---
+
+## Need Help Building It?
+
+I can:
+- Generate full **React + Node.js codebase**
+- Design **Figma UI kit**
+- Write **pitch deck** for investors
+- Help with **Stripe Connect** setup
+
+Just say: **“Build the full app”** or **“Generate Figma design”**
+
+---
+
+**Tisaundike is ready to disrupt.**  
+Let’s build the future of music — **together**. 🎵
+
+*Reply with your next step.*￼EnterBelow is a **complete professional blueprint** for launching **Tisaundike** — a modern music streaming platform inspired by Spotify, with distinct user roles:
+
+- **Creators** (upload & manage music, earn from streams)  
+- **Listeners** (stream, discover, follow creators)  
+
+I’ll provide:
+1. **Website Overview & Branding**
+2. **User Roles & Account System**
+3. **Core Features**
+4. **Tech Stack Recommendation**
+5. **Frontend UI/UX Mockup (HTML/CSS/JS Starter)**
+6. **Backend Architecture**
+7. **Monetization & Legal Notes**
+8. **Your Details (as requested)**
+
+---
+
+## 1. **Tisaundike – Official Branding**
+
+**Name:** Tisaundike  
+**Tagline:** *Your Sound. Your Stage. Your Stream.*  
+**Domain:** [tisaundike.com](https://tisaundike.com) *(register via Namecheap/GoDaddy)*  
+**Logo Concept:** A stylized **sound wave forming a crown** — symbolizing empowerment of creators.  
+**Color Palette:**  
+- Primary: **#1DB954** (Spotify Green)  
+- Secondary: **#121212** (Dark Mode Base)  
+- Accent: **#FF4B6B** (Coral Pink for CTAs)  
+- Text: **#FFFFFF** / **#B3B3B3**
+
+---
+
+## 2. **User Roles & Account System**
+
+| Role        | Permissions |
+|-------------|-----------|
+| **Listener** | Stream music, create playlists, follow creators, like/comment, free tier (ads) or premium (no ads) |
+| **Creator**  | Upload tracks/albums, edit metadata, view analytics, withdraw earnings, promote music |
+| **Admin**    | Moderate content, manage users, payouts, site settings |
+
+### Registration Flow:
+- **Email + Password** or **Google/Apple Sign-In**
+- On signup: Choose **"I’m a Listener"** or **"I’m a Creator"**
+- Creators: Verify identity (ID upload) → Approved within 48 hrs
+
+---
+
+## 3. **Core Features**
+
+### For Listeners:
+- Personalized home feed (AI recommendations)
+- Search by song, artist, genre, mood
+- Playlists (user-created, curated, algorithmic)
+- Offline download (Premium only)
+- Lyrics display (synced)
+- Radio stations (genre/artist-based)
+
+### For Creators:
+- **Upload Portal** (MP3/WAV, cover art, ISRC, metadata)
+- Analytics Dashboard (streams, geography, revenue)
+- Payout system (PayPal/Stripe, $0.003–$0.005 per stream)
+- Promotion tools (pre-save campaigns, embed players)
+- Collaboration invites
+
+### Shared:
+- Social features: Follow, share, repost
+le app (iOS/Android – React Native)
+- Web player (responsive, PWA)
+
+---
+
+## 4. **Recommended Tech Stack**
+
+| Layer         | Technology |
+|--------------|----------|
+| **Frontend** | React.js + Tailwind CSS + Vite |
+| **Backend**  | Node.js (Express) or Python (Django) |
+| **Database** | PostgreSQL (users, tracks) + Redis (caching) |
+| **File Storage** | AWS S3 (audio) + CloudFront CDN |
+| **Auth** | Firebase Auth or Supabase Auth |
+| **Streaming** | HLS/DASH via Cloudflare Stream or AWS IVS |
+| **Analytics** | Mixpanel or custom with PostgreSQL |
+| **Payments** | Stripe Connect (for creator payouts) |
+| **Hosting** | Vercel (frontend), Render/AWS (backend) |
+
+---
+
+## 5. **Frontend Starter Code (Professional Landing Page)**
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tisaundike – Stream. Create. Earn.</title>
+   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #121212; color: #fff; }
+    .gradient-bg { background: linear-gradient(135deg, #1DB954 0%, #121212 70%); }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Navbar -->
+  <nav class="fixed top-0 w-full bg-black bg-opacity-90 backdrop-blur z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-[#1DB954]">Tisaundike</h1>
+      <div class="space-x-6">
+        <a href="#listener" class="hover:text-[#1DB954] transition">For Listeners</a>
+        <a href="#creator" class="hover:text-[#1DB954] transition">For Creators</a>
+        <a href="/login" class="bg-[#1DB954] px-5 py-2 rounded-full font-semibold hover:bg-[#1ed760] transition">Sign In</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="gradient-bg pt-32 pb-20 text-center">
+    <div class="max-w-4xl mx-auto px-6">
+      <h1 class="text-5xl md:text-7xl font-bold mb-6">Your Music.<br>Your Rules.</h1>
+      <p class="text-xl mb-8 text-gray-200">Stream millions of songs. Upload yours. Earn real money.</p>
+      <div class="space-x-4">
+        <a href="/signup?role=listener" class="bg-white text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-200 transition">Start Listening</a>
+        <a href="/signup?role=creator" class="border-2 border-[#1DB954] text-[#1DB954] px-8 py-4 rounded-full font-bold text-lg hover:bg-[#1DB954] hover:text-black transition">Become a Creator</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Listener Section -->
+  <section id="listener" class="py-20 bg-[#121212]">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <h2 class="text-4xl font-bold mb-6">Discover Music That Moves You</h2>
+      <p class="text-lg text-gray-400 mb-12">Free tier with ads • Premium: $4.99/mo (no ads, offline, HD)</p>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-[#1f1f1f] p-6 rounded-xl">
+          <h3 class="text-xl font-semibold mb-3">AI Playlists</h3>
+          <p class="text-gray-400">Daily mixes based on your mood and taste.</p>
+        </div>
+        <div class="bg-[#1f1f1f] p-6 rounded-xl">
+          <h3 class="text-xl font-semibold mb-3">Offline Mode</h3>
+          <p class="text-gray-400">Download and listen anywhere.</p>
+        </div>
+        <div class="bg-[#1f1f1f] p-6 rounded-xl">
+          <h3 class="text-xl font-semibold mb-3">Lyrics & Radio</h3>
+          <p class="text-gray-400">Sing along. Explore new genres.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Creator Section -->
+  <section id="creator" class="py-20 bg-[#181818]">
+    <div class="max-w-6xl mx-auto px-6 text-center">
+      <h2 class="text-4xl font-bold mb-6 text-[#1DB954]">Get Paid for Your Art</h2>
+      <p class="text-lg text-gray-400 mb-12">Upload once. Earn forever. Full control.</p>
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="bg-[#1f1f1f] p-6 rounded-xl">
+          <h3 class="text-xl font-semibold mb-3">Direct Upload</h3>
+          <p class="text-gray-400">No middlemen. Keep 80% of revenue.</p>
+        </div>
+        <div class="bg-[#1f1f1f] p-6 rounded-xl">
+          <h3 class="text-xl font-semibold mb-3">Real Analytics</h3>
+          <p class="text-gray-400">See who’s listening, where, and when.</p>
+        </div>
+        <div class="bg-[#1f1f1f] p-6 rounded-xl">
