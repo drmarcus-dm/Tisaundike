@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tisaundike - Your Music. Your Stage.</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #121212; color: #fff; }
+    .gradient-bg { background: linear-gradient(135deg, #1DB954 0%, #121212 70%); }
+    .nav-link { @apply text-white hover:text-[#1DB954] transition; }
+    .btn-green { @apply bg-[#1DB954] text-black font-bold px-6 py-3 rounded-full hover:bg-[#1ed760] transition; }
+    .card { @apply bg-[#1f1f1f] p-4 rounded-lg hover:bg-[#2a2a2a] transition; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full bg-black bg-opacity-90 backdrop-blur z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-[#1DB954]">Tisaundike</h1>
+      <div class="space-x-6">
+        <a href="#" onclick="showPage('home')" class="nav-link">Home</a>
+        <a href="#" onclick="showPage('search')" class="nav-link">Search</a>
+        <a href="#" id="dashboard-link" onclick="showDashboard()" class="nav-link hidden">Dashboard</a>
+        <a href="#" onclick="showPage('login')" id="login-link" class="nav-link">Login</a>
+        <a href="#" onclick="showPage('register')" id="register-link" class="nav-link hidden">Register</a>
+        <a href="#" onclick="logout()" id="logout-link" class="nav-link hidden text-red-400">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Container -->
+  <div id="page-container" class="pt-20">
+
+    <!-- Home Page -->
+    <div id="home" class="page">
+      <section class="gradient-bg py-20 text-center">
+        <div class="max-w-4xl mx-auto px-6">
+          <h1 class="text-5xl md:text-7xl font-bold mb-6">Your Music.<br>Your Rules.</h1>
+          <p class="text-xl mb-8 text-gray-200">Stream millions of songs. Upload yours. Earn real money.</p>
+          <div class="space-x-4">
+            <button onclick="showPage('register')" class="bg-white text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-200 transition">Start Listening</button>
+            <button onclick="showPage('register')" class="border-2 border-[#1DB954] text-[#1DB954] px-8 py-4 rounded-full font-bold text-lg hover:bg-[#1DB954] hover:text-black transition">Become a Creator</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-16 bg-[#121212]">
+        <div class="max-w-6xl mx-auto px-6">
+          <h2 class="text-3xl font-bold mb-8">Top Tracks</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Sample Track -->
+            <div class="card" onclick="playTrack('Afro Beat', 'Juma', 'cover1.jpg', 'audio1.mp3')">
+              <img src="https://via.placeholder.com/300x300/1DB954/000000?text=Afro+Beat" alt="cover" class="w-full h-40 object-cover rounded mb-3">
+              <h3 class="font-bold">Afro Beat</h3>
+              <p class="text-sm text-gray-400">Juma • 12.4K streams</p>
+            </div>
+            <div class="card" onclick="playTrack('Sunset Vibes', 'Amina', 'cover2.jpg', 'audio2.mp3')">
+              <img src="https://via.placeholder.com/300x300/FF4B6B/000000?text=Sunset" alt="cover" class="w-full h-40 object-cover rounded mb-3">
+              <h3 class="font-bold">Sunset Vibes</h3>
+              <p class="text-sm text-gray-400">Amina • 8.9K streams</p>
+            </div>
+            <div class="card" onclick="playTrack('Midnight Drive', 'Kofi', 'cover3.jpg', 'audio3.mp3')">
+              <img src="https://via.placeholder.com/300x300/4B6BFF/000000?text=Midnight" alt="cover" class="w-full h-40 object-cover rounded mb-3">
+              <h3 class="font-bold">Midnight Drive</h3>
+              <p class="text-sm text-gray-400">Kofi • 15.2K streams</p>
+            </div>
+            <div class="card" onclick="playTrack('Golden Hour', 'Zara', 'cover4.jpg', 'audio4.mp3')">
+              <img src="https://via.placeholder.com/300x300/FFD700/000000?text=Golden" alt="cover" class="w-full h-40 object-cover rounded mb-3">
+              <h3 class="font-bold">Golden Hour</h3>
+              <p class="text-sm text-gray-400">Zara • 20.1K streams</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Register Page -->
+    <div id="register" class="page hidden">
+      <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-[#1f1f1f] p-8 rounded-lg w-full max-w-md">
+          <h1 class="text-2xl font-bold mb-6 text-[#1DB954]">Create Account</h1>
+          <form onsubmit="register(event)">
+            <input type="text" id="reg-name" placeholder="Full Name" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <input type="email" id="reg-email" placeholder="Email" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <input type="password" id="reg-password" placeholder="Password" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <div class="mb-4 text-white">
+              <label><input type="radio" name="role" value="listener" checked> Listener</label><br>
+              <label><input type="radio" name="role" value="creator"> Creator</label>
+            </div>
+            <button type="submit" class="w-full btn-green">Register</button>
+          </form>
+          <p class="mt-4 text-center text-gray-400">Already have an account? <a href="#" onclick="showPage('login')" class="text-[#1DB954]">Login</a></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Login Page -->
+    <div id="login" class="page hidden">
+      <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-[#1f1f1f] p-8 rounded-lg w-full max-w-md">
+          <h1 class="text-2xl font-bold mb-6 text-[#1DB954]">Login</h1>
+          <form onsubmit="login(event)">
+            <input type="email" id="login-email" placeholder="Email" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <input type="password" id="login-password" placeholder="Password" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <button type="submit" class="w-full btn-green">Login</button>
+          </form>
+          <p class="mt-4 text-center text-gray-400">No account? <a href="#" onclick="showPage('register')" class="text-[#1DB954]">Register</a></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Creator Dashboard -->
+    <div id="creator-dashboard" class="page hidden">
+      <div class="container mx-auto p-6">
+        <h2 class="text-3xl font-bold mb-6">Welcome, <span id="creator-name">Creator</span>!</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div class="bg-[#1f1f1f] p-6 rounded-lg">
+            <h3 class="text-lg text-gray-400">Total Streams</h3>
+            <p class="text-3xl font-bold text-[#1DB954]">45,620</p>
+          </div>
+          <div class="bg-[#1f1f1f] p-6 rounded-lg">
+            <h3 class="text-lg text-gray-400">Earnings</h3>
+            <p class="text-3xl font-bold text-[#1DB954]">$182.48</p>
+          </div>
+          <div class="bg-[#1f1f1f] p-6 rounded-lg">
+            <button onclick="showPage('upload')" class="w-full btn-green">Upload New Track</button>
+          </div>
+        </div>
+        <h3 class="text-xl mb-4">Your Tracks</h3>
+        <div class="space-y-4">
+          <div class="bg-[#1f1f1f] p-4 rounded flex justify-between items-center">
+            <div>
+              <p class="font-bold">Afro Beat</p>
+              <p class="text-sm text-gray-400">12,400 streams • $49.60</p>
+            </div>
+            <button onclick="playTrack('Afro Beat', 'You', 'cover1.jpg', 'audio1.mp3')" class="text-[#1DB954]">Play</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Listener Dashboard -->
+    <div id="listener-dashboard" class="page hidden">
+      <div class="container mx-auto p-6">
+        <h2 class="text-3xl font-bold mb-6">Your Playlists</h2>
+        <div class="space-y-4">
+          <div class="bg-[#1f1f1f] p-4 rounded">
+            <h3 class="font-bold">Chill Vibes</h3>
+            <p class="text-sm text-gray-400">12 tracks</p>
+          </div>
+          <div class="bg-[#1f1f1f] p-4 rounded">
+            <h3 class="font-bold">Workout Mix</h3>
+            <p class="text-sm text-gray-400">8 tracks</p>
+          </div>
+        </div>
+        <p class="mt-6 text-gray-400">No playlists yet? <a href="#" onclick="showPage('home')" class="text-[#1DB954]">Discover music →</a></p>
+      </div>
+    </div>
+
+    <!-- Upload Page -->
+    <div id="upload" class="page hidden">
+      <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-[#1f1f1f] p-8 rounded-lg w-full max-w-lg">
+          <h1 class="text-2xl font-bold mb-6 text-[#1DB954]">Upload Music</h1>
+          <form onsubmit="uploadTrack(event)">
+            <input type="text" id="track-title" placeholder="Track Title" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <input type="text" id="track-genre" placeholder="Genre (Optional)" class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <input type="file" id="audio-file" accept="audio/*" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <input type="file" id="cover-file" accept="image/*" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <button type="submit" class="w-full btn-green">Upload Track</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Player Page -->
+    <div id="player" class="page hidden fixed inset-0 bg-black flex items-center justify-center z-50">
+      <div class="max-w-md w-full p-6 bg-[#1f1f1f] rounded-lg shadow-lg">
+        <img id="player-cover" src="" alt="cover" class="w-full h-64 object-cover rounded mb-6">
+        <h1 id="player-title" class="text-2xl font-bold"></h1>
+        <p id="player-artist" class="text-lg text-gray-400"></p>
+        <audio id="audio-player" controls autoplay class="w-full mt-6">
+          <source id="audio-source" src="" type="audio/mpeg">
+          Your browser does not support audio.
+        </audio>
+        <button onclick="showPage('home')" class="mt-6 block w-full text-center text-[#1DB954]">Back to Home</button>
+      </div>
+    </div>
+
+    <!-- Search Page -->
+    <div id="search" class="page hidden"><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tisaundike - Your Music. Your Stage.</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #121212; color: #fff; }
+    .gradient-bg { background: linear-gradient(135deg, #1DB954 0%, #121212 70%); }
+    .nav-link { @apply text-white hover:text-[#1DB954] transition; }
+    .btn-green { @apply bg-[#1DB954] text-black font-bold px-6 py-3 rounded-full hover:bg-[#1ed760] transition; }
+    .card { @apply bg-[#1f1f1f] p-4 rounded-lg hover:bg-[#2a2a2a] transition; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full bg-black bg-opacity-90 backdrop-blur z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-[#1DB954]">Tisaundike</h1>
+      <div class="space-x-6">
+        <a href="#" onclick="showPage('home')" class="nav-link">Home</a>
+        <a href="#" onclick="showPage('search')" class="nav-link">Search</a>
+        <a href="#" id="dashboard-link" onclick="showDashboard()" class="nav-link hidden">Dashboard</a>
+        <a href="#" onclick="showPage('login')" id="login-link" class="nav-link">Login</a>
+        <a href="#" onclick="showPage('register')" id="register-link" class="nav-link hidden">Register</a>
+        <a href="#" onclick="logout()" id="logout-link" class="nav-link hidden text-red-400">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Container -->
+  <div id="page-container" class="pt-20">
+
+    <!-- Home Page -->
+    <div id="home" class="page">
+      <section class="gradient-bg py-20 text-center">
+        <div class="max-w-4xl mx-auto px-6">
+          <h1 class="text-5xl md:text-7xl font-bold mb-6">Your Music.<br>Your Rules.</h1>
+          <p class="text-xl mb-8 text-gray-200">Stream millions of songs. Upload yours. Earn real money.</p>
+          <div class="space-x-4">
+            <button onclick="showPage('register')" class="bg-white text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-200 transition">Start Listening</button>
+            <button onclick="showPage('register')" class="border-2 border-[#1DB954] text-[#1DB954] px-8 py-4 rounded-full font-bold text-lg hover:bg-[#1DB954] hover:text-black transition">Become a Creator</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-16 bg-[#121212]">
+        <div class="max-w-6xl mx-auto px-6">
+          <h2 class="text-3xl font-bold mb-8">Top Tracks</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Sample Track -->
+            <div class="card" onclick="playTrack('Afro Beat', 'Juma', 'cover1.jpg', 'audio1.mp3')">
+              <img src="https://via.placeholder.com/300x300/1DB954/000000?text=Afro+Beat" alt="cover" class="w-full h-40 object-cover rounded mb-3">
+              <h3 class="font-bold">Afro Beat</h3>
+              <p class="text-sm text-gray-400">Juma • 12.4K streams</p>
+            </div>
+            <div class="card" onclick="playTrack('Sunset Vibes', 'Amina', 'cover2.jpg', 'audio2.mp3')">
+              <img src="https://via.placeholder.com/300x300/FF4B6B/000000?text=Sunset" alt="cover" class="w-full h-40 object-cover rounded mb-3">
+              <h3 class="font-bold">Sunset Vibes</h3>
+              <p class="text-sm text-gray-400">Amina • 8.9K streams</p>
+            </div>
+            <div class="card" onclick="playTrack('Midnight Drive', 'Kofi', 'cover3.jpg', 'audio3.mp3')">
+              <img src="https://via.placeholder.com/300x300/4B6BFF/000000?text=Midnight" alt="cover" class="w-full h-40 object-cover rounded mb-3">
+              <h3 class="font-bold">Midnight Drive</h3>
+              <p class="text-sm text-gray-400">Kofi • 15.2K streams</p>
+            </div>
+            <div class="card" onclick="playTrack('Golden Hour', 'Zara', 'cover4.jpg', 'audio4.mp3')">
+              <img src="https://via.placeholder.com/300x300/FFD700/000000?text=Golden" alt="cover" class="w-full h-40 object-cover rounded mb-3">
+              <h3 class="font-bold">Golden Hour</h3>
+              <p class="text-sm text-gray-400">Zara • 20.1K streams</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Register Page -->
+    <div id="register" class="page hidden">
+      <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-[#1f1f1f] p-8 rounded-lg w-full max-w-md">
+          <h1 class="text-2xl font-bold mb-6 text-[#1DB954]">Create Account</h1>
+          <form onsubmit="register(event)">
+            <input type="text" id="reg-name" placeholder="Full Name" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <input type="email" id="reg-email" placeholder="Email" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <input type="password" id="reg-password" placeholder="Password" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <div class="mb-4 text-white">
+              <label><input type="radio" name="role" value="listener" checked> Listener</label><br>
+              <label><input type="radio" name="role" value="creator"> Creator</label>
+            </div>
+            <button type="submit" class="w-full btn-green">Register</button>
+          </form>
+          <p class="mt-4 text-center text-gray-400">Already have an account? <a href="#" onclick="showPage('login')" class="text-[#1DB954]">Login</a></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Login Page -->
+    <div id="login" class="page hidden">
+      <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-[#1f1f1f] p-8 rounded-lg w-full max-w-md">
+          <h1 class="text-2xl font-bold mb-6 text-[#1DB954]">Login</h1>
+          <form onsubmit="login(event)">
+            <input type="email" id="login-email" placeholder="Email" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <input type="password" id="login-password" placeholder="Password" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <button type="submit" class="w-full btn-green">Login</button>
+          </form>
+          <p class="mt-4 text-center text-gray-400">No account? <a href="#" onclick="showPage('register')" class="text-[#1DB954]">Register</a></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Creator Dashboard -->
+    <div id="creator-dashboard" class="page hidden">
+      <div class="container mx-auto p-6">
+        <h2 class="text-3xl font-bold mb-6">Welcome, <span id="creator-name">Creator</span>!</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div class="bg-[#1f1f1f] p-6 rounded-lg">
+            <h3 class="text-lg text-gray-400">Total Streams</h3>
+            <p class="text-3xl font-bold text-[#1DB954]">45,620</p>
+          </div>
+          <div class="bg-[#1f1f1f] p-6 rounded-lg">
+            <h3 class="text-lg text-gray-400">Earnings</h3>
+            <p class="text-3xl font-bold text-[#1DB954]">$182.48</p>
+          </div>
+          <div class="bg-[#1f1f1f] p-6 rounded-lg">
+            <button onclick="showPage('upload')" class="w-full btn-green">Upload New Track</button>
+          </div>
+        </div>
+        <h3 class="text-xl mb-4">Your Tracks</h3>
+        <div class="space-y-4">
+          <div class="bg-[#1f1f1f] p-4 rounded flex justify-between items-center">
+            <div>
+              <p class="font-bold">Afro Beat</p>
+              <p class="text-sm text-gray-400">12,400 streams • $49.60</p>
+            </div>
+            <button onclick="playTrack('Afro Beat', 'You', 'cover1.jpg', 'audio1.mp3')" class="text-[#1DB954]">Play</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Listener Dashboard -->
+    <div id="listener-dashboard" class="page hidden">
+      <div class="container mx-auto p-6">
+        <h2 class="text-3xl font-bold mb-6">Your Playlists</h2>
+        <div class="space-y-4">
+          <div class="bg-[#1f1f1f] p-4 rounded">
+            <h3 class="font-bold">Chill Vibes</h3>
+            <p class="text-sm text-gray-400">12 tracks</p>
+          </div>
+          <div class="bg-[#1f1f1f] p-4 rounded">
+            <h3 class="font-bold">Workout Mix</h3>
+            <p class="text-sm text-gray-400">8 tracks</p>
+          </div>
+        </div>
+        <p class="mt-6 text-gray-400">No playlists yet? <a href="#" onclick="showPage('home')" class="text-[#1DB954]">Discover music →</a></p>
+      </div>
+    </div>
+
+    <!-- Upload Page -->
+    <div id="upload" class="page hidden">
+      <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-[#1f1f1f] p-8 rounded-lg w-full max-w-lg">
+          <h1 class="text-2xl font-bold mb-6 text-[#1DB954]">Upload Music</h1>
+          <form onsubmit="uploadTrack(event)">
+            <input type="text" id="track-title" placeholder="Track Title" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <input type="text" id="track-genre" placeholder="Genre (Optional)" class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <input type="file" id="audio-file" accept="audio/*" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <input type="file" id="cover-file" accept="image/*" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <button type="submit" class="w-full btn-green">Upload Track</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Player Page -->
+    <div id="player" class="page hidden fixed inset-0 bg-black flex items-center justify-center z-50">
+      <div class="max-w-md w-full p-6 bg-[#1f1f1f] rounded-lg shadow-lg">
+        <img id="player-cover" src="" alt="cover" class="w-full h-64 object-cover rounded mb-6">
+        <h1 id="player-title" class="text-2xl font-bold"></h1>
+        <p id="player-artist" class="text-lg text-gray-400"></p>
+        <audio id="audio-player" controls autoplay class="w-full mt-6">
+          <source id="audio-source" src="" type="audio/mpeg">
+          Your browser does not support audio.
+        </audio>
+        <button onclick="showPage('home')" class="mt-6 block w-full text-center text-[#1DB954]">Back to Home</button>
+      </div>
+    </div>
+
+    <!-- Search Page -->
+    <div id="search" class="page hidden">
+      <div class="container mx-auto p-6">
+        < h2 class="text-3xl font-bold mb-6">Search Music</h2>
+        <input type="text" id="search-input" placeholder="Search songs, artists..." class="w-full p-3 mb-6 bg-gray-800 rounded text-white">
+        <div id="search-results" class="grid grid-cols-1 md:grid-cols-3 gap-6"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-black py-8 text-center text-gray-500 text-sm mt-20">
+    <p>© 2025 Tisaundike. All rights reserved. • <a href="#" class="hover:text-white">Terms</a> • <a href="#" class="hover:text-white">Privacy</a></p>
+    <p class="mt-2">Founder: <strong>Your Name</strong> • Nairobi, Kenya</p>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    let currentUser = null;
+
+    function showPage(pageId) {
+      document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+      document.getElementById(pageId).classList.remove('hidden');
+      if (pageId === 'home') window.scrollTo(0, 0);
+    }
+
+    function showDashboard() {
+      if (!currentUser) return showPage('login');
+      showPage(currentUser.role + '-dashboard');
+      document.getElementById('creator-name').textContent = currentUser.name;
+    }
+
+    function register(e) {
+      e.preventDefault();
+      const name = document.getElementById('reg-name').value;
+      const email = document.getElementById('reg-email').value;
+      const role = document.querySelector('input[name="role"]:checked').value;
+      currentUser = { name, email, role };
+      updateAuthUI();
+      alert(`Welcome, ${name}! You're now a ${role}.`);
+      showDashboard();
+    }
+
+    function login(e) {
+      e.preventDefault();
+      const email = document.getElementById('login-email').value;
+      currentUser = { name: email.split('@')[0], email, role: 'listener' }; // Mock
+      updateAuthUI();
+      alert('Logged in successfully!');
+      showPage('home');
+    }
+
+    function logout() {
+      currentUser = null;
+      updateAuthUI();
+      showPage('home');
+    }
+
+    function updateAuthUI() {
+      const loggedIn = !!currentUser;
+      document.getElementById('login-link').classList.toggle('hidden', loggedIn);
+      document.getElementById('register-link').classList.toggle('hidden', loggedIn);
+      document.getElementById('dashboard-link').classList.toggle('hidden', !loggedIn);
+      document.getElementById('logout-link').classList.toggle('hidden', !loggedIn);
+    }
+
+    function uploadTrack(e) {
+      e.preventDefault();
+      alert('Track uploaded successfully! (Demo)');
+      showDashboard();
+    }
+
+    function playTrack(title, artist, cover, audio) {
+      document.getElementById('player-title').textContent = title;
+      document.getElementById('player-artist').textContent = artist;
+      document.getElementById('player-cover').src = cover.includes('placeholder') ? cover : 'https://via.placeholder.com/300';
+      document.getElementById('audio-source').src = audio.includes('.mp3') ? audio : 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
+      document.getElementById('audio-player').load();
+      showPage('player');
+    }
+
+    // Search Mock
+    document.getElementById('search-input').addEventListener('input', function() {
+      const q = this.value.toLowerCase();
+      const results = document.getElementById('search-results');
+      if (!q) {
+        results.innerHTML = '';
+        return;
+      }
+      results.innerHTML = `
+        <div class="card" onclick="playTrack('Result 1', 'Artist', 'cover1.jpg', 'audio1.mp3')">
+          <h3 class="font-bold">Result 1</h3><p class="text-sm text-gray-400">Artist</p>
+        </div>`;
+    });
+
+    // Init
+    updateAuthUI();
+    showPage('home');
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tisaundike - Your Music. Your Stage.</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background: #121212; color: #fff; }
+    .gradient-bg { background: linear-gradient(135deg, #1DB954 0%, #121212 70%); }
+    .nav-link { @apply text-white hover:text-[#1DB954] transition; }
+    .btn-green { @apply bg-[#1DB954] text-black font-bold px-6 py-3 rounded-full hover:bg-[#1ed760] transition; }
+    .card { @apply bg-[#1f1f1f] p-4 rounded-lg hover:bg-[#2a2a2a] transition; }
+    .hidden { display: none; }
+  </style>
+</head>
+<body class="min-h-screen">
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 w-full bg-black bg-opacity-90 backdrop-blur z-50">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+      <h1 class="text-2xl font-bold text-[#1DB954]">Tisaundike</h1>
+      <div class="space-x-6">
+        <a href="#" onclick="showPage('home')" class="nav-link">Home</a>
+        <a href="#" onclick="showPage('search')" class="nav-link">Search</a>
+        <a href="#" id="dashboard-link" onclick="showDashboard()" class="nav-link hidden">Dashboard</a>
+        <a href="#" onclick="showPage('login')" id="login-link" class="nav-link">Login</a>
+        <a href="#" onclick="showPage('register')" id="register-link" class="nav-link hidden">Register</a>
+        <a href="#" onclick="logout()" id="logout-link" class="nav-link hidden text-red-400">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Container -->
+  <div id="page-container" class="pt-20">
+
+    <!-- Home Page -->
+    <div id="home" class="page">
+      <section class="gradient-bg py-20 text-center">
+        <div class="max-w-4xl mx-auto px-6">
+          <h1 class="text-5xl md:text-7xl font-bold mb-6">Your Music.<br>Your Rules.</h1>
+          <p class="text-xl mb-8 text-gray-200">Stream millions of songs. Upload yours. Earn real money.</p>
+          <div class="space-x-4">
+            <button onclick="showPage('register')" class="bg-white text-black px-8 py-4 rounded-full font-bold text-lg hover:bg-gray-200 transition">Start Listening</button>
+            <button onclick="showPage('register')" class="border-2 border-[#1DB954] text-[#1DB954] px-8 py-4 rounded-full font-bold text-lg hover:bg-[#1DB954] hover:text-black transition">Become a Creator</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-16 bg-[#121212]">
+        <div class="max-w-6xl mx-auto px-6">
+          <h2 class="text-3xl font-bold mb-8">Top Tracks</h2>
+          <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <!-- Sample Track -->
+            <div class="card" onclick="playTrack('Afro Beat', 'Juma', 'cover1.jpg', 'audio1.mp3')">
+              <img src="https://via.placeholder.com/300x300/1DB954/000000?text=Afro+Beat" alt="cover" class="w-full h-40 object-cover rounded mb-3">
+              <h3 class="font-bold">Afro Beat</h3>
+              <p class="text-sm text-gray-400">Juma • 12.4K streams</p>
+            </div>
+            <div class="card" onclick="playTrack('Sunset Vibes', 'Amina', 'cover2.jpg', 'audio2.mp3')">
+              <img src="https://via.placeholder.com/300x300/FF4B6B/000000?text=Sunset" alt="cover" class="w-full h-40 object-cover rounded mb-3">
+              <h3 class="font-bold">Sunset Vibes</h3>
+              <p class="text-sm text-gray-400">Amina • 8.9K streams</p>
+            </div>
+            <div class="card" onclick="playTrack('Midnight Drive', 'Kofi', 'cover3.jpg', 'audio3.mp3')">
+              <img src="https://via.placeholder.com/300x300/4B6BFF/000000?text=Midnight" alt="cover" class="w-full h-40 object-cover rounded mb-3">
+              <h3 class="font-bold">Midnight Drive</h3>
+              <p class="text-sm text-gray-400">Kofi • 15.2K streams</p>
+            </div>
+            <div class="card" onclick="playTrack('Golden Hour', 'Zara', 'cover4.jpg', 'audio4.mp3')">
+              <img src="https://via.placeholder.com/300x300/FFD700/000000?text=Golden" alt="cover" class="w-full h-40 object-cover rounded mb-3">
+              <h3 class="font-bold">Golden Hour</h3>
+              <p class="text-sm text-gray-400">Zara • 20.1K streams</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <!-- Register Page -->
+    <div id="register" class="page hidden">
+      <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-[#1f1f1f] p-8 rounded-lg w-full max-w-md">
+          <h1 class="text-2xl font-bold mb-6 text-[#1DB954]">Create Account</h1>
+          <form onsubmit="register(event)">
+            <input type="text" id="reg-name" placeholder="Full Name" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <input type="email" id="reg-email" placeholder="Email" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <input type="password" id="reg-password" placeholder="Password" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <div class="mb-4 text-white">
+              <label><input type="radio" name="role" value="listener" checked> Listener</label><br>
+              <label><input type="radio" name="role" value="creator"> Creator</label>
+            </div>
+            <button type="submit" class="w-full btn-green">Register</button>
+    </form>
+          <p class="mt-4 text-center text-gray-400">Already have an account? <a href="#" onclick="showPage('login')" class="text-[#1DB954]">Login</a></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Login Page -->
+    <div id="login" class="page hidden">
+      <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-[#1f1f1f] p-8 rounded-lg w-full max-w-md">
+          <h1 class="text-2xl font-bold mb-6 text-[#1DB954]">Login</h1>
+          <form onsubmit="login(event)">
+            <input type="email" id="login-email" placeholder="Email" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <input type="password" id="login-password" placeholder="Password" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <button type="submit" class="w-full btn-green">Login</button>
+          </form>
+          <p class="mt-4 text-center text-gray-400">No account? <a href="#" onclick="showPage('register')" class="text-[#1DB954]">Register</a></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Creator Dashboard -->
+    <div id="creator-dashboard" class="page hidden">
+      <div class="container mx-auto p-6">
+        <h2 class="text-3xl font-bold mb-6">Welcome, <span id="creator-name">Creator</span>!</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div class="bg-[#1f1f1f] p-6 rounded-lg">
+            <h3 class="text-lg text-gray-400">Total Streams</h3>
+            <p class="text-3xl font-bold text-[#1DB954]">45,620</p>
+          </div>
+          <div class="bg-[#1f1f1f] p-6 rounded-lg">
+            <h3 class="text-lg text-gray-400">Earnings</h3>
+            <p class="text-3xl font-bold text-[#1DB954]">$182.48</p>
+          </div>
+          <div class="bg-[#1f1f1f] p-6 rounded-lg">
+            <button onclick="showPage('upload')" class="w-full btn-green">Upload New Track</button>
+          </div>
+        </div>
+        <h3 class="text-xl mb-4">Your Tracks</h3>
+        <div class="space-y-4">
+          <div class="bg-[#1f1f1f] p-4 rounded flex justify-between items-center">
+            <div>
+              <p class="font-bold">Afro Beat</p>
+              <p class="text-sm text-gray-400">12,400 streams • $49.60</p>
+            </div>
+            <button onclick="playTrack('Afro Beat', 'You', 'cover1.jpg', 'audio1.mp3')" class="text-[#1DB954]">Play</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Listener Dashboard -->
+    <div id="listener-dashboard" class="page hidden">
+      <div class="container mx-auto p-6">
+        <h2 class="text-3xl font-bold mb-6">Your Playlists</h2>
+        <div class="space-y-4">
+          <div class="bg-[#1f1f1f] p-4 rounded">
+            <h3 class="font-bold">Chill Vibes</h3>
+            <p class="text-sm text-gray-400">12 tracks</p>
+          </div>
+          <div class="bg-[#1f1f1f] p-4 rounded">
+            <h3 class="font-bold">Workout Mix</h3>
+            <p class="text-sm text-gray-400">8 tracks</p>
+          </div>
+        </div>
+        <p class="mt-6 text-gray-400">No playlists yet? <a href="#" onclick="showPage('home')" class="text-[#1DB954]">Discover music →</a></p>
+      </div>
+    </div>
+
+    <!-- Upload Page -->
+    <div id="upload" class="page hidden">
+      <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-[#1f1f1f] p-8 rounded-lg w-full max-w-lg">
+          <h1 class="text-2xl font-bold mb-6 text-[#1DB954]">Upload Music</h1>
+          <form onsubmit="uploadTrack(event)">
+            <input type="text" id="track-title" placeholder="Track Title" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <input type="text" id="track-genre" placeholder="Genre (Optional)" class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <input type="file" id="audio-file" accept="audio/*" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <input type="file" id="cover-file" accept="image/*" required class="w-full p-3 mb-4 bg-gray-800 rounded text-white">
+            <button type="submit" class="w-full btn-green">Upload Track</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Player Page -->
+    <div id="player" class="page hidden fixed inset-0 bg-black flex items-center justify-center z-50">
+      <div class="max-w-md w-full p-6 bg-[#1f1f1f] rounded-lg shadow-lg">
+        <img id="player-cover" src="" alt="cover" class="w-full h-64 object-cover rounded mb-6">
+        <h1 id="player-title" class="text-2xl font-bold"></h1>
+        <p id="player-artist" class="text-lg text-gray-400"></p>
+        <audio id="audio-player" controls autoplay class="w-full mt-6">
+          <source id="audio-source" src="" type="audio/mpeg">
+          Your browser does not support audio.
+        </audio>
+        <button onclick="showPage('home')" class="mt-6 block w-full text-center text-[#1DB954]">Back to Home</button>
+      </div>
+    </div>
+
+    <!-- Search Page -->
