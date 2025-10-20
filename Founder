@@ -1,0 +1,8 @@
+// Add to top of file if needed
+const FOUNDER = {
+  name: "Your Name",
+  title: "Founder & CEO, Tisaundike",
+  email: "founder@tisaundike.com",
+  linkedin: "linkedin.com/in/yourprofile",
+  location: "Nairobi, Kenya"
+};￼Enter
